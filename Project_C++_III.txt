@@ -1,0 +1,67 @@
+class CColorBox : public CStatic
+{
+public:
+	COLORREF color;
+	MY_DATA* pDat;
+
+	CColorBox() : pDat(NULL) { color = RGB(255, 255, 255); }
+	void SetData(MY_DATA* pData) { pDat = pData; }
+	void SetItem(int i);
+	void SetColor(COLORREF col) { color = col; }
+
+protected:
+	DECLARE_MESSAGE_MAP()
+
+	afx_msg void OnPaint();
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//  class CColorBox
+
+BEGIN_MESSAGE_MAP(CColorBox, CStatic)
+	ON_WM_PAINT()
+END_MESSAGE_MAP()
+
+
+void CColorBox::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: Add your message handler code here
+					   // Do not call CDialogEx::OnPaint() for painting messages
+
+	CRect rect;
+	this->GetClientRect(&rect);
+
+	CBrush newbrush;
+	CBrush* oldbrush;
+	newbrush.CreateSolidBrush(color);
+	oldbrush = dc.SelectObject(&newbrush);
+
+	dc.Rectangle(0, 0, (rect.right - rect.left), (rect.bottom - rect.top));
+
+	dc.SelectObject(oldbrush);
+	newbrush.DeleteObject();
+}
+
+void CColorBox::SetItem(int i)
+{
+	COLORREF tab[] = { RGB(0, 0, 0), RGB(255, 0, 0), RGB(0, 255, 0), RGB(0, 0, 255) };
+	int ii = i % (sizeof(tab) / sizeof(tab[0]));
+	color = tab[ii];
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// CInputDataDlg
+
+void CDialogInputData::OnClickedButtonColor()
+{
+	// TODO: Add your control notification handler code here
+	CColorDialog dlg;
+
+	if (dlg.DoModal())
+	{
+		m_ColorBox.SetColor(dlg.GetColor());
+		m_ColorBox.Invalidate();
+	}
+}

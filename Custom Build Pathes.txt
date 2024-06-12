@@ -1,0 +1,22 @@
+dll
+Command lines:
+copy $(TargetDir)$(TargetName).lib ..\..\LibDbg64\$(TargetName).lib
+copy $(TargetPath) ..\..\ExeDbg64\$(TargetName).dll
+
+Outputs:
+..\..\ExeDbg64\$(TargetName).dll
+
+Additional dependencies:
+$(TargetDir)$(TargetName).lib
+$(TargetPath)
+
+exe
+Command Line:
+copy $(TargetPath) ..\..\ExeDbg64\$(TargetName).exe
+
+Outputs: 
+..\..\ExeDbg64\$(TargetName).exe
+
+Additional dependencie:
+$(TargetDir)$(TargetName).lib
+$(TargetPath)
